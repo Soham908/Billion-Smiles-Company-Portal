@@ -25,7 +25,9 @@ export interface ICampaign extends Document {
   createdAt: Date;
   selectedFeatures: string[],
   supporterCount: number,
-  targetLikes: number
+  targetLikes: number,
+  milestonesCompleted: string[],
+  category: string
 }
 
 const campaignSchema = new Schema<ICampaign>(
@@ -58,7 +60,9 @@ const campaignSchema = new Schema<ICampaign>(
     createdAt:            { type: Date, default: Date.now },
     selectedFeatures: [String],
     supporterCount: { type: Number, default: 0 },
-    targetLikes: { type: Number }
+    targetLikes: { type: Number },
+    milestonesCompleted: { type: [String], default: [] },
+    category: String
   },
   {
     collection: 'campaigns',

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Campaign, ICampaign } from "../models/campaignModel";
 import Company from "../models/companyModel";
+import { ActivityLog } from "../models/activityLogModel";
 
 export const createCampaignController = async (req: Request, res: Response) => {
     const session = await mongoose.startSession();
@@ -24,7 +25,11 @@ export const createCampaignController = async (req: Request, res: Response) => {
         company.campaigns.push(campaignId);
         const companyDocument = await company.save({ session });
         const companyData = await companyDocument.populate("campaigns")
-        await session.commitTransaction();  
+        const activityLogUpdate = await ActivityLog.create([{ campaignId: campaignId, 
+            campaignTitle: createdCampaign.campaignTitle, companyId: campaignData.companyRef, 
+            activityType: "Campaign_Created", message: "Congrats you created new campaign" }], { session: session })
+
+        await session.commitTransaction();
         session.endSession();
 
         res.json({

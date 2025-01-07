@@ -12,6 +12,7 @@ import {
   InputLabel,
   FormControl,
   TextField,
+  SelectChangeEvent,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCompanyStore } from "../../store/companyDataStore";
@@ -21,20 +22,44 @@ import { ICampaign } from "../../types/campaignInterface";
 import { formatToINR } from "../../utils/formatToInr";
 
 const ManageCampaigns = () => {
-  // Dummy campaign data
   const navigate = useNavigate()
   const { companyData } = useCompanyStore()
-  // const campaignData = [...companyData.campaigns]
   const [campaignData, setCampaignData] = useState<ICampaign[]>()
   useEffect(() => {
     const fetchCampaignData = async () => {
-      console.log(companyData._id)
       const response = await fetchAllCompaniesCampaignsHandler(companyData._id)
       setCampaignData(response.campaignsData?.reverse())
-      console.log(response.campaignsData)
     }
     fetchCampaignData()
   }, [])
+
+  const [statusFilter, setStatusFilter] = useState<string>("All");
+  const [causeFilter, setCauseFilter] = useState<string>("All");
+
+  const handleStatusChange = (event: SelectChangeEvent<string>) => {
+    setStatusFilter(event.target.value as string);
+  };
+
+  const handleCauseChange = (event: SelectChangeEvent<string>) => {
+    setCauseFilter(event.target.value as string);
+  };
+
+  const filteredCampaignData = campaignData?.filter((campaign) => {
+    let matches = true;
+  
+    if (statusFilter !== "All" && campaign.campaignStatus !== statusFilter) {
+      matches = false;
+    }
+  
+    if (causeFilter !== "All" && campaign.category !== causeFilter) {
+      matches = false;
+    }
+    
+    return matches;
+  });
+  
+
+
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -52,7 +77,10 @@ const ManageCampaigns = () => {
       >
         <FormControl sx={{ minWidth: 150, mr: 2 }}>
           <InputLabel id="status-label">Status</InputLabel>
-          <Select labelId="status-label" defaultValue="All" label="Status">
+          <Select labelId="status-label" defaultValue="All" 
+              value={statusFilter}
+              onChange={handleStatusChange}
+          label="Status">
             <MenuItem value="All">All</MenuItem>
             <MenuItem value="Ongoing">Ongoing</MenuItem>
             <MenuItem value="Completed">Completed</MenuItem>
@@ -60,7 +88,10 @@ const ManageCampaigns = () => {
         </FormControl>
         <FormControl sx={{ minWidth: 150 }}>
           <InputLabel id="cause-label">Cause</InputLabel>
-          <Select labelId="cause-label" defaultValue="All" label="Cause">
+          <Select labelId="cause-label" defaultValue="All" 
+              value={causeFilter}
+              onChange={handleCauseChange}
+              label="Cause">
             <MenuItem value="All">All</MenuItem>
             <MenuItem value="Education">Education</MenuItem>
             <MenuItem value="Healthcare">Healthcare</MenuItem>
@@ -77,7 +108,7 @@ const ManageCampaigns = () => {
 
       {/* Campaign List */}
       <Grid container spacing={2}>
-        {campaignData && campaignData.map((campaign) =>{ return (
+        {filteredCampaignData && filteredCampaignData.map((campaign) =>{ return (
           <Grid item xs={12} key={campaign._id}>
             <Card>
               <CardContent>

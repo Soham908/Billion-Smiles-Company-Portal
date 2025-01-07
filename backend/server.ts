@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import campaignRoute from './routes/campaignRoute'
 import authenticationRoute from './routes/authenticationRoute'
+import activityRoute from './routes/activityRoute'
 dotenv.config();
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 
 app.use("/auth", authenticationRoute)
 app.use("/campaigns", campaignRoute)
+app.use("/activity-log", activityRoute)
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: 'reached backend' });

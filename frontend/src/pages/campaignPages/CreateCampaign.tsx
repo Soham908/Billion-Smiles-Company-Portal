@@ -118,7 +118,7 @@ const CreateCampaign = () => {
                 required
               >
                 {causesDummyData.map((cause) => (
-                  <MenuItem key={cause.id} value={cause.id}>
+                  <MenuItem key={cause.id} value={cause.title}>
                     {cause.title} - {cause.ngo}
                   </MenuItem>
                 ))}

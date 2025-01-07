@@ -22,21 +22,5 @@ export interface ICampaign {
   createdAt?: string;
   selectedFeatures: string[];
   targetLikes: number;
+  category: string
 }
-
-// export interface ICampaign {
-//     _id?: string,
-//     campaignTitle: string,
-//     causeName: string,
-//     startDate: string,
-//     endDate: string,
-//     campaignDescription: string,
-//     hashtags: string,
-//     targetAmount: string,
-//     imageUrl: string,
-//     location: string | "saki naka",
-//     contactEmail: string | "demo@zeist.com",
-//     campaignManager: string | "demoManager",
-//     companyName: string | "tata motors",
-//     companyRef: string,
-// }

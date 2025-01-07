@@ -9,6 +9,7 @@ import LoginPage from './pages/authentication/Login';
 import SignupPage from './pages/authentication/Signup';
 import CompanyDetailsForm from './pages/authentication/CompanyDetailsForm';
 import CreateCampaign from './pages/campaignPages/CreateCampaign';
+import RecentActivities from './pages/main-pages/RecentActivitiesPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/reports" element={<MainLayout> <Reports /> </MainLayout> } />
             <Route path="/features" element={<MainLayout> <Features /> </MainLayout> } />
             <Route path="/manage-campaigns" element={<MainLayout> <ManageCampaigns /> </MainLayout> } />
+            <Route path="/recent-activities" element={<MainLayout> <RecentActivities /> </MainLayout> } />
             <Route path="/login" element={<AuthLayout> <LoginPage /> </AuthLayout> } />
             <Route path="/signup" element={<AuthLayout> <SignupPage /> </AuthLayout>} />
             <Route path="/company-details" element={<AuthLayout> <CompanyDetailsForm /> </AuthLayout>} />

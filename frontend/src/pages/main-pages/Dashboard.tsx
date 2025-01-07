@@ -1,10 +1,11 @@
-import { Box, Button, Typography, Grid, Paper, Card, CardContent, Divider } from '@mui/material';
+import { Box, Button, Typography, Grid, Card, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReportIcon from '@mui/icons-material/Report';
 import { useCompanyStore } from '../../store/companyDataStore';
 import { formatToINR } from '../../utils/formatToInr';
+import RecentActivity from '../../components/RecentActivityComponent';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -120,24 +121,7 @@ const Dashboard = () => {
 
 
       {/* Recent Activity */}
-      <Paper elevation={3} sx={{ p: 3, mt: 5 }}>
-      <Typography variant="h5" sx={{ mt: 1, mb: 2 }}>
-        Recent Campaign Activity
-      </Typography>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          Milestone 2 reached for Campaign X!
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          $500 donated to Campaign Y.
-        </Typography>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          New campaign "Green Earth" created.
-        </Typography>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="body2" color="textSecondary">
-          View all activities
-        </Typography>
-      </Paper>
+      <RecentActivity />
     </Box>
   );
 };
