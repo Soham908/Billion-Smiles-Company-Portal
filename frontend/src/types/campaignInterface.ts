@@ -20,7 +20,8 @@ export interface ICampaign {
   progress: number;
   campaignStatus: "Ongoing" | "Completed" | "Preset";
   createdAt?: string;
-  selectedFeatures: string[]
+  selectedFeatures: string[];
+  targetLikes: number;
 }
 
 // export interface ICampaign {

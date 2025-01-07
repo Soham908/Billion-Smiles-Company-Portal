@@ -45,7 +45,7 @@ const CreateCampaign = () => {
     contactEmail: managerEmail,
     location: companyAddress, // this will come from the ngo side
     selectedFeatures: [],
-      amountRaised: 0, campaignCause: "", campaignStatus: "Ongoing",ngoName: "",ngoReference: "",progress: 0
+    amountRaised: 0, campaignCause: "", campaignStatus: "Ongoing",ngoName: "",ngoReference: "",progress: 0, targetLikes: 0
   });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,12 +80,12 @@ const CreateCampaign = () => {
     const updatedFeatures = campaignData.selectedFeatures.includes(feature)
       ? campaignData.selectedFeatures.filter((f) => f !== feature)
       : [...campaignData.selectedFeatures, feature];
-
-    setCampaignData({ ...campaignData, selectedFeatures: updatedFeatures });
+    const targetLikes = campaignData.targetAmount / 10000
+    setCampaignData({ ...campaignData, selectedFeatures: updatedFeatures, targetLikes: targetLikes });
   };
 
   return (
-    <Box sx={{ p: 4, bgcolor: "#f9f9f9", minHeight: "100vh" }}>
+    <Box sx={{ bgcolor: "#f9f9f9", minHeight: "100vh" }}>
       <Typography variant="h4" gutterBottom>
         Create a New Campaign
       </Typography>

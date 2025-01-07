@@ -1,12 +1,11 @@
 import axios from "axios"
 import { ICampaign } from "../types/campaignInterface"
 import { ICompany } from "../types/companyInterface"
+import { IApiResponse } from "../types/api-handler-response"
 const url = import.meta.env.VITE_BACKEND_URL + "/campaigns"
 
-interface ICreateCampaign {
-    success: boolean,
+interface ICreateCampaign extends IApiResponse {
     campaignData?: ICampaign,
-    errorMessage?: string,
     companyData?: ICompany,
 }
 
@@ -15,7 +14,7 @@ export const createCampaignHandler = async (file: File, campaignData: ICampaign)
     campaignData.imageUrl = imageUrl
     const response = await campaignStoreInBackend(campaignData)
     console.log(response)
-    return { success: true, campaignData: response.campaignData, companyData: response.companyData }
+    return { success: true, campaignData: response.campaignData, companyData: response.companyData, message: "campaign created" }
 }
 
 const uploadCampaignImageHandler = async (file: File) => {
@@ -35,5 +34,18 @@ const campaignStoreInBackend = async (campaignData: ICampaign) => {
         return response.data
     } catch (error) {
         console.log("error occured: " + error)
+    }
+}
+
+interface IFetchCompCampaigns extends IApiResponse{
+    campaignsData?: ICampaign[]
+}
+export const fetchAllCompaniesCampaignsHandler = async (companyId: string): Promise<IFetchCompCampaigns> => {
+    try {
+        const response = await axios.get(url + `/fetch-company-campaigns/${companyId}`)
+        return { success: true, message: "campaigns fetched", campaignsData: response.data.campaignsData }
+    } catch (error) {
+        console.log("error: " + error)
+        return { success: false, message: "error occured: " + error }
     }
 }

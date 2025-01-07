@@ -15,12 +15,26 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCompanyStore } from "../../store/companyDataStore";
+import { useEffect, useState } from "react";
+import { fetchAllCompaniesCampaignsHandler } from "../../api-handlers/campaignHandler";
+import { ICampaign } from "../../types/campaignInterface";
+import { formatToINR } from "../../utils/formatToInr";
 
 const ManageCampaigns = () => {
   // Dummy campaign data
   const navigate = useNavigate()
   const { companyData } = useCompanyStore()
-  console.log(companyData)
+  // const campaignData = [...companyData.campaigns]
+  const [campaignData, setCampaignData] = useState<ICampaign[]>()
+  useEffect(() => {
+    const fetchCampaignData = async () => {
+      console.log(companyData._id)
+      const response = await fetchAllCompaniesCampaignsHandler(companyData._id)
+      setCampaignData(response.campaignsData?.reverse())
+      console.log(response.campaignsData)
+    }
+    fetchCampaignData()
+  }, [])
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -63,7 +77,7 @@ const ManageCampaigns = () => {
 
       {/* Campaign List */}
       <Grid container spacing={2}>
-        {companyData.campaigns.reverse().map((campaign) =>{ return (
+        {campaignData && campaignData.map((campaign) =>{ return (
           <Grid item xs={12} key={campaign._id}>
             <Card>
               <CardContent>
@@ -99,10 +113,10 @@ const ManageCampaigns = () => {
                   }}
                 >
                   <Typography variant="body2">
-                    Target: Rs. {campaign.targetAmount.toString()}
+                    Target: Rs. {formatToINR(campaign.targetAmount)}
                   </Typography>
                   <Typography variant="body2">
-                    Raised: Rs. {campaign.amountRaised.toString()}
+                    Raised: Rs. {formatToINR(campaign.amountRaised)}
                   </Typography>
                   <Typography variant="body2">Progress: {campaign.progress}%</Typography>
                   <Typography variant="body2">

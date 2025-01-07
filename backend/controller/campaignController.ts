@@ -41,3 +41,15 @@ export const createCampaignController = async (req: Request, res: Response) => {
         res.status(500).json({ success: false, message: "Campaign creation failed", error: error });
     }
 };
+
+export const fetchCompaniesCampaignsController = async (req: Request, res: Response) => {
+    try {
+        console.log(req.params)
+        const fetchResponse = await Company.findById(req.params.companyId).populate('campaigns')
+        console.log(fetchResponse?.campaigns)
+        res.json({ success: true, message: "campaigns fetched", campaignsData: fetchResponse?.campaigns})
+    } catch (error) {
+        console.log(error)
+        res.json({ success: false, message: "fetching failed" })
+    }
+}

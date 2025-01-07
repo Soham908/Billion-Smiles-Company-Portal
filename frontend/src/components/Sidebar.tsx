@@ -28,10 +28,10 @@ const Sidebar = () => {
     <Drawer
       variant="permanent"
       sx={{
-        width: 240,
+        width: 200,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
-          width: 240,
+          width: 200,
           boxSizing: 'border-box',
           backgroundColor: '#f4f4f4',
         },
@@ -47,7 +47,7 @@ const Sidebar = () => {
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
-            <ListItemButton onClick={() => navigate(item.path)}>
+            <ListItemButton onClick={() => navigate(item.path)} disableGutters sx={{ paddingX: 2 }}>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

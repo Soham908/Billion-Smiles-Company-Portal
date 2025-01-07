@@ -23,7 +23,9 @@ export interface ICampaign extends Document {
   progress: number;
   campaignStatus: 'Ongoing' | 'Completed' | 'Preset';
   createdAt: Date;
-  selectedFeatures: string[]
+  selectedFeatures: string[],
+  supporterCount: number,
+  targetLikes: number
 }
 
 const campaignSchema = new Schema<ICampaign>(
@@ -53,8 +55,10 @@ const campaignSchema = new Schema<ICampaign>(
       enum: ['Ongoing', 'Completed', 'Preset'],
       default: 'Ongoing',
     },
-    selectedFeatures: [String],
     createdAt:            { type: Date, default: Date.now },
+    selectedFeatures: [String],
+    supporterCount: { type: Number, default: 0 },
+    targetLikes: { type: Number }
   },
   {
     collection: 'campaigns',

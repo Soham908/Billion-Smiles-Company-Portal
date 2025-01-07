@@ -4,6 +4,7 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ReportIcon from '@mui/icons-material/Report';
 import { useCompanyStore } from '../../store/companyDataStore';
+import { formatToINR } from '../../utils/formatToInr';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -12,7 +13,11 @@ const Dashboard = () => {
   const totalSpendingAmount = companyData.campaigns.reduce((total, campaign) => {
     return total + Number(campaign.targetAmount);
   }, 0);
+  const totalRaiseAmount = companyData.campaigns.reduce((total, campaign) => {
+    return total + Number(campaign.amountRaised)
+  }, 0);
   
+  const completedCampaigns = companyData.campaigns.filter((campaign) => campaign.campaignStatus === 'Completed')
 
   return (
     <Box sx={{ p: 1 }}>
@@ -30,33 +35,43 @@ const Dashboard = () => {
         Campaign Overview
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card elevation={3}>
             <CardContent>
               <Typography variant="h6" color="textSecondary">
                 Active Campaigns
               </Typography>
-              <Typography variant="h4">{activeCampaigns}</Typography>
+              <Typography variant="h5" fontSize={28}>{activeCampaigns}</Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card elevation={3}>
+            <CardContent>
+              <Typography variant="h6" color="textSecondary">
+                Total Amount Raised
+              </Typography>
+              <Typography variant="h5" fontSize={28}>Rs. {formatToINR(totalRaiseAmount)}</Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card elevation={3}>
             <CardContent>
               <Typography variant="h6" color="textSecondary">
                 Total Spending Target
               </Typography>
-              <Typography variant="h4">Rs. {totalSpendingAmount}</Typography>
+              <Typography variant="h5" fontSize={28}>Rs. {formatToINR(totalSpendingAmount)}</Typography>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card elevation={3}>
             <CardContent>
               <Typography variant="h6" color="textSecondary">
-                Pending Campaigns
+                Completed Campaigns
               </Typography>
-              <Typography variant="h4">0</Typography>
+              <Typography variant="h5" fontSize={28}>{completedCampaigns.length}</Typography>
             </CardContent>
           </Card>
         </Grid>
