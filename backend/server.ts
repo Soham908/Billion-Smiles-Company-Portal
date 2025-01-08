@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import campaignRoute from './routes/campaignRoute'
 import authenticationRoute from './routes/authenticationRoute'
 import activityRoute from './routes/activityRoute'
+import companyRoute from './routes/companyRoute'
 dotenv.config();
 const app = express();
 
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use("/auth", authenticationRoute)
 app.use("/campaigns", campaignRoute)
 app.use("/activity-log", activityRoute)
+app.use("/company", companyRoute)
+
 
 app.get("/", (req: Request, res: Response) => {
   res.json({ message: 'reached backend' });

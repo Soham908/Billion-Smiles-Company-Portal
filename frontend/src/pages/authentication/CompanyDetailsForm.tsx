@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { TextField, Button, Typography, Box, Grid, Paper } from "@mui/material";
+import { TextField, Button, Typography, Box, Grid, Paper, Stack } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ISignupInput } from "./Signup";
 import { signupCompanyHandler } from "../../api-handlers/authenticationHandler";
@@ -10,6 +10,7 @@ export interface IAdditionalCompanyDetails extends ISignupInput {
   managerEmail: string;
   companyAddress: string;
   managerPhoneNumber: string;
+  companyLogoUrl: string
 }
 
 const CompanyDetailsForm = () => {
@@ -20,24 +21,36 @@ const CompanyDetailsForm = () => {
     managerEmail: "demo@tata.com",
     companyAddress: "Mumbai",
     managerPhoneNumber: "9876543210",
+    companyLogoUrl: "",
     companyEmail: companyEmail,
     companyName: companyName,
     password: password
   });
   const navigate = useNavigate()
   const { setCompanyData } = useCompanyStore()
+  const [imageFile, setImageFile] = useState<File>()
+
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if(e.target.files){
+      setFormData({ ...formData });
+      setImageFile(e.target.files[0])
+    }
+  };
+
   const handleSubmit = async () => {
-    const response = await signupCompanyHandler(formData)
-    console.log(response.companyData)
-    if (response.success && response.companyData) {
-      setCompanyData(response.companyData)
-      navigate("/")
+    if (imageFile) {
+      const response = await signupCompanyHandler(formData, imageFile);
+      console.log(response.companyData);
+      if (response.success && response.companyData) {
+        setCompanyData(response.companyData);
+        navigate("/");
+      }
     }
   };
 
@@ -107,6 +120,23 @@ const CompanyDetailsForm = () => {
               type="tel"
             />
           </Grid>
+          <Grid item xs={12}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Typography>Upload Campaign Image:</Typography>
+                <Button variant="contained" component="label">
+                  Upload File
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={handleFileChange}
+                  />
+                </Button>
+                {formData.companyLogoUrl && (
+                  <Typography variant="caption">{formData.companyLogoUrl}</Typography>
+                )}
+              </Stack>
+            </Grid>
           <Grid item xs={12}>
             <Button onClick={handleSubmit} type="submit" variant="contained" color="primary" fullWidth>
               Submit Details

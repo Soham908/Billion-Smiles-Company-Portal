@@ -10,22 +10,22 @@ interface ICreateCampaign extends IApiResponse {
 }
 
 export const createCampaignHandler = async (file: File, campaignData: ICampaign): Promise<ICreateCampaign> => {
-    const imageUrl = await uploadCampaignImageHandler(file)
-    campaignData.imageUrl = imageUrl
+    const upload_preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET_CAMPAIGN_IMAGES
+    const imageUrl = await uploadImageToCloudinary(file, upload_preset)
+    campaignData.imageUrl = imageUrl.secureUrl
     const response = await campaignStoreInBackend(campaignData)
     console.log(response)
     return { success: true, campaignData: response.campaignData, companyData: response.companyData, message: "campaign created" }
 }
 
-const uploadCampaignImageHandler = async (file: File) => {
-    const upload_preset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
+export const uploadImageToCloudinary = async (file: File, upload_preset: string): Promise<{secureUrl: string}> => {
     const cloudinary_url = import.meta.env.VITE_CLOUDINARY_URL
     const formData = new FormData()
     formData.append("file", file)
     formData.append("upload_preset", upload_preset);
     
     const response = await axios.post(cloudinary_url, formData)
-    return response.data.secure_url
+    return {secureUrl: response.data.secure_url}
 }
 
 const campaignStoreInBackend = async (campaignData: ICampaign) => {

@@ -6,7 +6,7 @@ interface ICompany extends Document {
   industryType: string;
   companyEmail: string;
   companyAddress?: string;
-  companyLogo?: string;
+  companyLogoUrl?: string;
   managerName: string;
   managerEmail: string;
   campaigns: mongoose.Types.ObjectId[];
@@ -24,7 +24,7 @@ const companySchema: Schema<ICompany> = new Schema(
     industryType: { type: String, required: false },
     companyEmail: { type: String, required: true, unique: true },
     companyAddress: { type: String, required: false },
-    companyLogo: { type: String, required: false },
+    companyLogoUrl: { type: String, required: false },
     managerName: { type: String, required: true },
     managerEmail: { type: String, required: true, unique: true },
     campaigns: [

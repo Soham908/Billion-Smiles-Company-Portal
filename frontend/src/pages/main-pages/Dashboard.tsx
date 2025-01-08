@@ -6,20 +6,34 @@ import ReportIcon from '@mui/icons-material/Report';
 import { useCompanyStore } from '../../store/companyDataStore';
 import { formatToINR } from '../../utils/formatToInr';
 import RecentActivity from '../../components/RecentActivityComponent';
+import { useEffect, useState } from 'react';
+import { fetchCompanyDetailsHandler } from '../../api-handlers/companyHandler';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { companyData } = useCompanyStore()
+  const { companyData, setCompanyData } = useCompanyStore()
   const activeCampaigns = companyData.campaigns.length
-  const totalSpendingAmount = companyData.campaigns.reduce((total, campaign) => {
-    return total + Number(campaign.targetAmount);
-  }, 0);
-  const totalRaiseAmount = companyData.campaigns.reduce((total, campaign) => {
-    return total + Number(campaign.amountRaised)
-  }, 0);
+  const [totalRaiseAmount, setTotalRaiseAmount] = useState(0)
+  const [totalSpendingAmount, setTotalSpendingAmount] = useState(0)
+
+  useEffect(() => {
+    const fetchCompanyDetails = async () => {
+      const response = await fetchCompanyDetailsHandler(companyData._id)
+      response.companyData && setCompanyData(response.companyData)
+    }
+    fetchCompanyDetails()
+  },[])
+
+  useEffect(() => {
+    setTotalRaiseAmount(companyData.campaigns.reduce((total, campaign) => {
+      return total + Number(campaign.amountRaised)
+    }, 0))
+    setTotalSpendingAmount(companyData.campaigns.reduce((total, campaign) => {
+      return total + Number(campaign.targetAmount);
+    }, 0))
+  }, [companyData])
   
   const completedCampaigns = companyData.campaigns.filter((campaign) => campaign.campaignStatus === 'Completed')
-
   return (
     <Box sx={{ p: 1 }}>
       {/* Welcome Section */}

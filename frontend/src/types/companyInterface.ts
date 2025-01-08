@@ -7,7 +7,7 @@ export interface ICompany {
     industryType: string;
     companyEmail: string;
     companyAddress: string;
-    companyLogo?: string;
+    companyLogoUrl?: string;
     managerName: string;
     managerEmail: string;
     campaigns: ICampaign[];

@@ -44,7 +44,7 @@ const CreateCampaign = () => {
     companyRef: _id,
     contactEmail: managerEmail,
     location: companyAddress, // this will come from the ngo side
-    selectedFeatures: [],
+    selectedFeatures: [], category: "",
     amountRaised: 0, campaignCause: "", campaignStatus: "Ongoing",ngoName: "",ngoReference: "",progress: 0, targetLikes: 0
   });
 

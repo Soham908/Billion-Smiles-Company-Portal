@@ -14,6 +14,7 @@ const RecentActivity = () => {
         const fetchActivities = async () => {
             const response = await fetchActivityHandler(companyData._id)
             setRecentActivities(response.activitiesData)
+            console.log(response.activitiesData);
         }
         fetchActivities()
     },[])
