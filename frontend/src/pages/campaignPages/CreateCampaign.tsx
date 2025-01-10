@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -16,6 +16,8 @@ import { createCampaignHandler } from "../../api-handlers/campaignHandler";
 import { useNavigate } from "react-router-dom";
 import { useCompanyStore } from "../../store/companyDataStore";
 import { featuresData } from "../main-pages/Features";
+import { fetchCausesHandler } from "../../api-handlers/causeHandler";
+import { ICause } from "../../types/causeInterface";
 
 const causesDummyData = [
   { id: "1", title: "Environmental Cleanup", location: "Mumbai", ngo: "EcoCare" },
@@ -47,6 +49,16 @@ const CreateCampaign = () => {
     selectedFeatures: [], category: "",
     amountRaised: 0, campaignCause: "", campaignStatus: "Ongoing",ngoName: "",ngoReference: "",progress: 0, targetLikes: 0
   });
+  const [causesData, setCausesData] = useState<ICause[]>()
+  
+  useEffect(() => {
+    const fetchCauses = async () => {
+      const response = await fetchCausesHandler()
+      console.log(response);
+      if (response.causesData) setCausesData(response.causesData)
+    }
+    fetchCauses()
+  }, [])
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -117,9 +129,9 @@ const CreateCampaign = () => {
                 onChange={handleInputChange}
                 required
               >
-                {causesDummyData.map((cause) => (
-                  <MenuItem key={cause.id} value={cause.title}>
-                    {cause.title} - {cause.ngo}
+                {causesData && causesData.map((cause) => (
+                  <MenuItem key={cause._id} value={cause.causeTitle}>
+                    {cause.causeTitle} - {cause.ngoName}
                   </MenuItem>
                 ))}
               </TextField>

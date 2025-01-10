@@ -8,9 +8,10 @@ export interface ICause extends Document {
   volunteerDate: Date;
   numberOfVolunteers: number;
   amountRaised: number;
-  amountRequired: number;
+  amountRequired: string;
   image?: string;
-  ngo: mongoose.Types.ObjectId; // Reference to NGO
+  ngoRef: mongoose.Types.ObjectId; // Reference to NGO
+  ngoName: string;
   createdAt: Date;
 }
 
@@ -23,9 +24,10 @@ const causeSchema = new Schema<ICause>(
     volunteerDate: { type: Date, required: true },
     numberOfVolunteers: { type: Number, default: 0 },
     amountRaised: { type: Number, default: 0 },
-    amountRequired: { type: Number, required: true },
+    amountRequired: { type: String, required: true },
     image: { type: String, required: false },
-    ngo: { type: mongoose.Schema.Types.ObjectId, ref: 'NGO', required: true },
+    ngoRef: { type: mongoose.Schema.Types.ObjectId, ref: 'NGO', required: true },
+    ngoName: String,
     createdAt: { type: Date, default: Date.now },
   },
   {

@@ -6,6 +6,7 @@ import campaignRoute from './routes/campaignRoute'
 import authenticationRoute from './routes/authenticationRoute'
 import activityRoute from './routes/activityRoute'
 import companyRoute from './routes/companyRoute'
+import causeRoute from './routes/causeRoute'
 dotenv.config();
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/auth", authenticationRoute)
 app.use("/campaigns", campaignRoute)
 app.use("/activity-log", activityRoute)
 app.use("/company", companyRoute)
+app.use("/cause", causeRoute)
 
 
 app.get("/", (req: Request, res: Response) => {
